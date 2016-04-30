@@ -1,0 +1,21 @@
+services:
+    jum4_doctrine_logger.log_builder:
+        class: Jum4\DoctrineLoggerBundle\Builder\LogBuilder
+        arguments:
+            - '@security.token_storage'
+            - '@doctrine.orm.default_entity_manager'
+
+    jum4_doctrine_logger.doctrine_logger:
+        class: Jum4\DoctrineLoggerBundle\Logger\DoctrineLogger
+        arguments:
+            - '@logger'
+            - '@jum4_doctrine_logger.log_builder'
+            - '%jum4_doctrine_logger.level%'
+
+    jum4_doctrine_logger.event_subscriber.doctrine:
+        class: Jum4\DoctrineLoggerBundle\EventListener\DoctrineEventSubscriber
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: monolog.logger }
+            - { name: doctrine.event_subscriber }
