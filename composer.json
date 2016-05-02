@@ -24,6 +24,6 @@
         "phpunit/phpunit": "^5.2"
     },
     "autoload": {
-        "psr-4": { "Jum4\\Bundle\\DoctrineLoggerBundle\\": "" }
+        "psr-4": { "Jum4\\DoctrineLoggerBundle\\": "" }
     }
 }
