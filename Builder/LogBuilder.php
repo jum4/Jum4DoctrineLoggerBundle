@@ -67,7 +67,7 @@ class LogBuilder
      */
     private function getIdentifier(EntityChangeSet $changeSet)
     {
-        if ($this->entityManager->getUnitOfWork()->isInIdentityMap($changeSet->getEntity())) {
+        if (is_object($changeSet->getEntity()) && $this->entityManager->getUnitOfWork()->isInIdentityMap($changeSet->getEntity())) {
             return implode(', ', $this->entityManager->getUnitOfWork()->getEntityIdentifier($changeSet->getEntity()));
         }
 
