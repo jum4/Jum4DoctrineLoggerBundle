@@ -49,8 +49,7 @@ class DoctrineEventSubscriber implements EventSubscriber
 
         if ($logger->isActive()) {
             foreach ($uow->getScheduledEntityInsertions() as $entity) {
-                $changeSet = $uow->getEntityChangeSet($entity);
-                $logger->add(new EntityChangeSet($entity, DoctrineLogger::ACTION_INSERT, $changeSet));
+                $logger->add(new EntityChangeSet($entity, DoctrineLogger::ACTION_INSERT, $uow->getEntityChangeSet($entity)));
             }
 
             foreach ($uow->getScheduledEntityUpdates() as $entity) {
