@@ -12,7 +12,7 @@ use Jum4\DoctrineLoggerBundle\Logger\EntityChangeSet;
 /**
  * Class DoctrineEventSubscriber
  *
- * @author Julien Martin <j.martin@highco-data.fr>
+ * @author Julien Martin <julien.martin@jum4.org>
  */
 class DoctrineEventSubscriber implements EventSubscriber
 {
@@ -49,7 +49,8 @@ class DoctrineEventSubscriber implements EventSubscriber
 
         if ($logger->isActive()) {
             foreach ($uow->getScheduledEntityInsertions() as $entity) {
-                $logger->add(new EntityChangeSet($entity, DoctrineLogger::ACTION_INSERT, $uow->getEntityChangeSet($entity)));
+                $changeSet = $uow->getEntityChangeSet($entity);
+                $logger->add(new EntityChangeSet($entity, DoctrineLogger::ACTION_INSERT, $changeSet));
             }
 
             foreach ($uow->getScheduledEntityUpdates() as $entity) {

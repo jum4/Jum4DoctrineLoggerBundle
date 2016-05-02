@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * Class Jum4DoctrineLoggerBundle
  *
- * @author Julien Martin <j.martin@highco-data.fr>
+ * @author Julien Martin <julien.martin@jum4.org>
  */
 class Jum4DoctrineLoggerBundle extends Bundle
 {

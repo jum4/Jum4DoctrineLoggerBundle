@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
  * Class LogBuilder
- * @author Julien Martin <j.martin@highco-data.fr>
+ * @author Julien Martin <julien.martin@jum4.org>
  */
 class LogBuilder
 {
@@ -67,7 +67,7 @@ class LogBuilder
      */
     private function getIdentifier(EntityChangeSet $changeSet)
     {
-        if (is_object($changeSet->getEntity())) {
+        if ($this->entityManager->getUnitOfWork()->isInIdentityMap($changeSet->getEntity())) {
             return implode(', ', $this->entityManager->getUnitOfWork()->getEntityIdentifier($changeSet->getEntity()));
         }
 

@@ -17,6 +17,12 @@
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6"
     },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^2.7",
+        "squizlabs/php_codesniffer": "^2.5",
+        "leaphub/phpcs-symfony2-standard": "^2.0",
+        "phpunit/phpunit": "^5.2"
+    },
     "autoload": {
         "psr-0": { "Jum4\\DoctrineLoggerBundle": "" }
     },

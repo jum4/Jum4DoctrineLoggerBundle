@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Class DoctrineLogger
  *
- * @author Julien Martin <j.martin@highco-data.fr>
+ * @author Julien Martin <julien.martin@jum4.org>
  */
 class DoctrineLogger
 {

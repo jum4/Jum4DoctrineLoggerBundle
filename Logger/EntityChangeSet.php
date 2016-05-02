@@ -4,7 +4,7 @@ namespace Jum4\DoctrineLoggerBundle\Logger;
 
 /**
  * Class EntityChangeSet
- * @author Julien Martin <j.martin@highco-data.fr>
+ * @author Julien Martin <julien.martin@jum4.org>
  */
 class EntityChangeSet
 {
