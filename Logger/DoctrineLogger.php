@@ -55,6 +55,10 @@ class DoctrineLogger
     {
         if ($this->isActive()) {
             $this->context->add($changeSet);
+
+            if (method_exists($this->context->getEntity(), 'setUpdated')) {
+                $this->context->getEntity()->setUpdated();
+            }
         }
     }
 
