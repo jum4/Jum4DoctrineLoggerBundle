@@ -3,7 +3,7 @@
 namespace Jum4\DoctrineLoggerBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Jum4\DoctrineLoggerBundle\Logger\DoctrineLogger;
@@ -33,18 +33,21 @@ class DoctrineEventSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            'onFlush',
+            'preFlush',
             'postFlush',
         ];
     }
 
     /**
-     * @param OnFlushEventArgs $eventArgs
+     * @param PreFlushEventArgs $eventArgs
      */
-    public function onFlush(OnFlushEventArgs $eventArgs)
+    public function preFlush(PreFlushEventArgs $eventArgs)
     {
         $em = $eventArgs->getEntityManager();
         $uow = $em->getUnitOfWork();
+
+        $uow->computeChangeSets();
+
         $logger = $this->getLogger();
 
         if ($logger->isActive()) {
