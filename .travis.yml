@@ -6,9 +6,14 @@ php:
   - nightly
 
 before_script:
-    - composer self-update
-    - composer install
+  - composer self-update
+  - composer install
 
 script:
-    - ./vendor/bin/phpcs --standard=vendor/leaphub/phpcs-symfony2-standard/leaphub/phpcs/Symfony2/ --extensions=php Builder/ DependencyInjection/ EventListener/ Logger/
-    - ./vendor/bin/phpunit -c phpunit.xml
+  - ./vendor/bin/phpcs --standard=vendor/leaphub/phpcs-symfony2-standard/leaphub/phpcs/Symfony2/ --extensions=php Builder/ DependencyInjection/ EventListener/ Logger/
+  - ./vendor/bin/phpunit -c phpunit.xml
+
+notifications:
+  email:
+    email: false
+
