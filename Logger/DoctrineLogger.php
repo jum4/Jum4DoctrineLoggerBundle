@@ -2,6 +2,7 @@
 
 namespace Jum4\DoctrineLoggerBundle\Logger;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Jum4\DoctrineLoggerBundle\Builder\LogBuilder;
 use Psr\Log\LoggerInterface;
 
@@ -28,15 +29,15 @@ class DoctrineLogger
     /**
      * DoctrineLogger constructor.
      *
-     * @param LoggerInterface $logger
-     * @param LogBuilder      $logBuilder
-     * @param string          $level
+     * @param LoggerInterface        $logger
+     * @param LogBuilder             $logBuilder
+     * @param string                 $level
      */
-    public function __construct(LoggerInterface $logger, LogBuilder $logBuilder, $level)
+    public function __construct($logger, LogBuilder $logBuilder, $level)
     {
-        $this->logBuilder = $logBuilder;
-        $this->logger     = $logger;
-        $this->level      = $level;
+        $this->logBuilder    = $logBuilder;
+        $this->logger        = $logger;
+        $this->level         = $level;
     }
 
     /**
@@ -49,16 +50,20 @@ class DoctrineLogger
     }
 
     /**
+     * @return EntityChangeSet
+     */
+    public function getContext()
+    {
+        return $this->context;
+    }
+
+    /**
      * @param EntityChangeSet $changeSet
      */
     public function add(EntityChangeSet $changeSet)
     {
         if ($this->isActive()) {
             $this->context->add($changeSet);
-
-            if (method_exists($this->context->getEntity(), 'setUpdated')) {
-                $this->context->getEntity()->setUpdated();
-            }
         }
     }
 

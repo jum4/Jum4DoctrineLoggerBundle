@@ -3,6 +3,8 @@
 namespace Jum4\DoctrineLoggerBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,20 +35,18 @@ class DoctrineEventSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            'preFlush',
+            'onFlush',
             'postFlush',
         ];
     }
 
     /**
-     * @param PreFlushEventArgs $eventArgs
+     * @param OnFlushEventArgs $eventArgs
      */
-    public function preFlush(PreFlushEventArgs $eventArgs)
+    public function onFlush(OnFlushEventArgs $eventArgs)
     {
         $em = $eventArgs->getEntityManager();
         $uow = $em->getUnitOfWork();
-
-        $uow->computeChangeSets();
 
         $logger = $this->getLogger();
 
@@ -69,6 +69,13 @@ class DoctrineEventSubscriber implements EventSubscriber
 
             foreach ($uow->getScheduledCollectionUpdates() as $col) {
                 $logger->add(new EntityChangeSet($col, DoctrineLogger::ACTION_COLLECTION_REMOVE));
+            };
+
+            $entity = $logger->getContext()->getEntity();
+            $metadata = $em->getClassMetadata(get_class($entity));
+            if (method_exists($entity, 'setUpdated')) {
+                $entity->setUpdated();
+                $uow->recomputeSingleEntityChangeSet($metadata, $entity);
             }
         }
     }
