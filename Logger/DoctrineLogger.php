@@ -29,9 +29,9 @@ class DoctrineLogger
     /**
      * DoctrineLogger constructor.
      *
-     * @param LoggerInterface        $logger
-     * @param LogBuilder             $logBuilder
-     * @param string                 $level
+     * @param LoggerInterface $logger
+     * @param LogBuilder      $logBuilder
+     * @param string          $level
      */
     public function __construct($logger, LogBuilder $logBuilder, $level)
     {
