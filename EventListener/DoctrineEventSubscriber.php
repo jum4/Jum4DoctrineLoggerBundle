@@ -71,12 +71,7 @@ class DoctrineEventSubscriber implements EventSubscriber
                 $logger->add(new EntityChangeSet($col, DoctrineLogger::ACTION_COLLECTION_REMOVE));
             };
 
-            $entity = $logger->getContext()->getEntity();
-            $metadata = $em->getClassMetadata(get_class($entity));
-            if (method_exists($entity, 'setUpdated')) {
-                $entity->setUpdated();
-                $uow->recomputeSingleEntityChangeSet($metadata, $entity);
-            }
+            $this->setUpdated($eventArgs);
         }
     }
 
@@ -95,5 +90,28 @@ class DoctrineEventSubscriber implements EventSubscriber
     private function getLogger()
     {
         return $this->container->get('jum4_doctrine_logger.doctrine_logger');
+    }
+
+    /**
+     * @param OnFlushEventArgs $eventArgs
+     *
+     */
+    private function setUpdated(OnFlushEventArgs $eventArgs)
+    {
+        $logger = $this->getLogger();
+        $em = $eventArgs->getEntityManager();
+        $uow = $em->getUnitOfWork();
+
+        $entities = $logger->getContext()->getEntity();
+        if (!is_array($entities) && !$entities instanceof \Traversable) {
+            $entities = [$entities];
+        }
+        foreach ($entities as $entity) {
+            $metadata = $em->getClassMetadata(get_class($entity));
+            if (method_exists($entity, 'setUpdated')) {
+                $entity->setUpdated();
+                $uow->recomputeSingleEntityChangeSet($metadata, $entity);
+            }
+        }
     }
 }
